@@ -1,7 +1,7 @@
-export const clueTypes = ["noun", "verb", "preposition", "adjective"] as const;
-export type ClueType = typeof clueTypes[number];
+export const wordTypes = ["noun", "verb", "preposition", "adjective"] as const;
+export type WordType = typeof wordTypes[number];
 
-export const clues: { [key in ClueType]: string[] } = {
+export const words: { [key in WordType]: string[] } = {
   noun: [
     "man",
     "woman",
