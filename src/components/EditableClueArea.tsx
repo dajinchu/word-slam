@@ -1,16 +1,13 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import React from "react";
 import { WordCard, EmptyCardSpot } from "./Cards";
-import { DraggableClue } from "../dnd";
+import { DraggableWord } from "../dnd";
+import { wordTypes } from "../constants";
 
-export function EditableClueArea({ clues }: { clues: DraggableClue[] }) {
+export function EditableClueArea({ clues }: { clues: DraggableWord[] }) {
   return (
     <div>
-      <Droppable
-        droppableId="droppable"
-        isCombineEnabled
-        direction="horizontal"
-      >
+      <Droppable droppableId="clues" direction="horizontal">
         {(provided, snapshot) => (
           <div
             {...provided.droppableProps}
@@ -27,11 +24,7 @@ export function EditableClueArea({ clues }: { clues: DraggableClue[] }) {
                     {...provided.dragHandleProps}
                     style={provided.draggableProps.style}
                   >
-                    {clue.word ? (
-                      <WordCard clue={clue.word} type="noun" />
-                    ) : (
-                      <EmptyCardSpot />
-                    )}
+                    <WordCard word={clue.word} type={clue.type} />
                   </div>
                 )}
               </Draggable>

@@ -1,7 +1,8 @@
-export const wordTypes = ["noun", "verb", "preposition", "adjective"] as const;
+export const wordTypes = ["noun", "verb", "preposition", "adjective", "spacer"] as const;
 export type WordType = typeof wordTypes[number];
 
-export const words: { [key in WordType]: string[] } = {
+export const dictionary: Record<WordType, string[]> = {
+  spacer: [''],
   noun: [
     "man",
     "woman",
@@ -68,7 +69,6 @@ export const words: { [key in WordType]: string[] } = {
     "run",
     "sit",
     "play",
-    "make",
     "make",
     "read",
     "write",

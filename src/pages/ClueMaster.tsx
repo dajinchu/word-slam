@@ -1,54 +1,87 @@
 import React, { useCallback, useState } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
-import { WordCard } from "../components/Cards";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DictionarySection } from "../components/DictionarySection";
 import { EditableClueArea } from "../components/EditableClueArea";
-import { words, wordTypes } from "../constants";
-import { DraggableClue } from "../dnd";
+import { dictionary, WordType } from "../constants";
+import { DnDState, DraggableWord } from "../dnd";
+import { mapValues } from "../utils";
 
-function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-}
-
-function handleDropResult(
-  clues: DraggableClue[],
-  result: DropResult
-): DraggableClue[] {
+function handleDropResult(state: DnDState, result: DropResult): DnDState {
   const { source, combine, destination } = result;
-  if (combine) {
+  /* if (combine) {
     const newItems = Array.from(clues);
     const destIndex = newItems.findIndex((i) => i.id === combine.draggableId);
     newItems[destIndex] = newItems[source.index];
     newItems.splice(source.index, 1);
     return newItems;
-  } else if (destination) {
-    return reorder(clues, source.index, destination.index);
+  } else */ if (
+    destination
+  ) {
+    // clone droppable sections
+    const sourceDroppable = [...state[source.droppableId]];
+    const destDroppable =
+      source.droppableId === destination.droppableId
+        ? sourceDroppable
+        : [...state[destination.droppableId]];
+
+    const sourceDraggable = sourceDroppable[source.index];
+
+    // remove from source
+    sourceDroppable.splice(source.index, 1);
+    // add to dest
+    destDroppable.splice(destination.index, 0, sourceDraggable);
+
+    if (source.droppableId === "spacer") {
+      // clone
+      sourceDroppable[source.index] = {
+        ...sourceDraggable,
+        id: parseInt(sourceDraggable.id) + 1 + "",
+      };
+    }
+
+    return {
+      ...state,
+      [source.droppableId]: sourceDroppable,
+      [destination.droppableId]: destDroppable,
+    };
+
+    // if (source.droppableId === 'clues') {
+    //   const sourceWord: DraggableWord = state.clues[source.index]
+    //   return reorder(clues, source.index, destination.index);
+    // } else {
+    //   const newItems = Array.from(clues);
+    //   //TODO: Actually lookup the word id!
+    //   const sourceWord: DraggableWord = dictionary[source.droppableId][source.index]
+    //   newItems.splice(destination.index, 0, sourceWord);
+
+    //   return newItems;
+    // }
   } else {
-    return clues;
+    return state;
   }
 }
 
-const DEFAULT: DraggableClue[] = [
-  { id: "dfjis", word: "dfjsio" },
-  { id: "2", word: "other item" },
-  { id: "4" },
-  { id: "jifdos", word: "last item" },
-];
+const DEFAULT: DraggableWord[] = [];
+
+const DRAGGABLE_DICTIONARY: DnDState = mapValues(
+  dictionary,
+  (words, wordType) =>
+    words.map((word) =>
+      wordType === "spacer"
+        ? { id: "0", type: wordType }
+        : { word: word, id: word, type: wordType }
+    )
+);
 
 export function ClueMaster() {
-  const [clues, setClues] = useState<DraggableClue[]>(DEFAULT);
+  const [{ clues, ...dictionary }, setCards] = useState<DnDState>({
+    clues: DEFAULT,
+    ...DRAGGABLE_DICTIONARY,
+  });
 
   const onDragEnd = useCallback(
     (result: DropResult) =>
-      setClues((clues) => handleDropResult(clues, result)),
+      setCards((state) => handleDropResult(state, result)),
     []
   );
 
@@ -61,71 +94,18 @@ export function ClueMaster() {
             <div className="text-white text-2xl font-bold">shower curtain</div>
           </div>
           <EditableClueArea clues={clues} />
-          <div className="py-2 pl-4 text-lg border-t border-b">Clues</div>
+          <div className="py-2 pl-4 text-lg border-t border-b">
+            Clue Dictionary
+          </div>
         </div>
         <div className="px-5 bg-gray-100 flex-grow">
-          {wordTypes.map((clueType) => (
+          {Object.entries(dictionary).map(([wordType, words]) => (
             <div>
-              <div className="pb-2 pt-6 text-lg font-bold">{clueType}s</div>
-              <Droppable
-                droppableId={clueType}
-                isDropDisabled
-                direction="horizontal"
-                renderClone={(provided, snapshot, rubric) => (
-                  <>
-                    <div
-                      className="select-none"
-                      ref={provided.innerRef}
-                      style={provided.draggableProps.style}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <WordCard
-                        clue={words[clueType][rubric.source.index]}
-                        type={clueType}
-                      />
-                    </div>
-                  </>
-                )}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    // {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    // className="flex flex-row flex-wrap"
-                    className="grid gap-1"
-                    style={{ gridTemplateColumns: "repeat(auto-fit, 5rem)" }}
-                  >
-                    {words[clueType].map((clue, idx) => {
-                      const shouldRenderClone =
-                        clue === snapshot.draggingFromThisWith;
-                      return (
-                        <React.Fragment key={clue}>
-                          {shouldRenderClone ? (
-                            <div className="react-dnd-clone">
-                              <WordCard clue={clue} type={clueType} />
-                            </div>
-                          ) : (
-                            <Draggable draggableId={clue} index={idx}>
-                              {(provided, snapshot) => (
-                                <div
-                                  className="select-none"
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                >
-                                  <WordCard clue={clue} type={clueType} />
-                                </div>
-                              )}
-                            </Draggable>
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
+              <div className="pb-2 pt-6 text-lg font-bold">{wordType}s</div>
+              <DictionarySection
+                words={words}
+                wordType={wordType as WordType}
+              />
             </div>
           ))}
         </div>
