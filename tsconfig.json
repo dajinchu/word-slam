@@ -21,6 +21,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src", "react-beautiful-dnd.d.ts"
   ]
 }
