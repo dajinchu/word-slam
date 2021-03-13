@@ -1,5 +1,4 @@
-export const wordTypes = ["noun", "verb", "preposition", "adjective", "spacer"] as const;
-export type WordType = typeof wordTypes[number];
+import { WordType } from "./types";
 
 export const dictionary: Record<WordType, string[]> = {
   spacer: [''],

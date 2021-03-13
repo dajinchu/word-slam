@@ -1,5 +1,5 @@
 import React from "react";
-import { ClueMaster } from "./pages/ClueMaster";
+import { ClueMaster } from "./cluemaster/ClueMaster";
 
 function App() {
   return (<div className="bg-gray-50 min-h-screen">

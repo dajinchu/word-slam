@@ -1,4 +1,4 @@
-import { WordType } from "../constants";
+import { WordType } from "./types";
 
 const bgClass: { [key in WordType]: string } = {
   noun: "bg-noun",

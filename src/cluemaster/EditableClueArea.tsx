@@ -1,8 +1,7 @@
 import { Draggable, Droppable } from "@dajinchu/react-beautiful-dnd";
-import React from "react";
-import { EmptyCardSpot, WordCard } from "./Cards";
-import { DraggableWord } from "../dnd";
-import { times } from "../utils";
+import { EmptyCardSpot, WordCard } from "../common/Cards";
+import { DraggableWord } from "../common/types";
+import { times } from "../common/utils";
 
 export function EditableClueArea({ clues }: { clues: DraggableWord[] }) {
   return (

@@ -1,6 +1,5 @@
-/** Drag and drop stuff */
-
-import { WordType } from "./constants";
+export const wordTypes = ["noun", "verb", "preposition", "adjective", "spacer"] as const;
+export type WordType = typeof wordTypes[number];
 
 export interface DraggableWord {
   id: string;

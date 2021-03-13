@@ -4,9 +4,8 @@ import {
   Draggable,
   DraggableProvided,
 } from "@dajinchu/react-beautiful-dnd";
-import { WordType } from "../constants";
-import { DraggableWord } from "../dnd";
-import { WordCard } from "./Cards";
+import { DraggableWord, WordType } from "../common/types";
+import { WordCard } from "../common/Cards";
 
 export function DraggableCard({
   word,

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import { DragDropContext, DropResult } from "@dajinchu/react-beautiful-dnd";
-import { DictionarySection } from "../components/DictionarySection";
-import { EditableClueArea } from "../components/EditableClueArea";
-import { dictionary, WordType } from "../constants";
-import { DnDState, DraggableWord } from "../dnd";
-import { mapValues } from "../utils";
+import { DictionarySection } from "./DictionarySection";
+import { EditableClueArea } from "./EditableClueArea";
+import { dictionary } from "../common/constants";
+import { DnDState, WordType } from "../common/types";
+import { mapValues } from "../common/utils";
 
 function handleDropResult(state: DnDState, result: DropResult): DnDState {
   const { source, destination } = result;
