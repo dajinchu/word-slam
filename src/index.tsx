@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import firebase from 'firebase';
+
+const config = {
+  databaseURL: "https://word-slam-ac542-default-rtdb.firebaseio.com/",
+};
+firebase.initializeApp(config);
 
 ReactDOM.render(
   <React.StrictMode>

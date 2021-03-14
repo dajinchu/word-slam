@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "@dajinchu/react-beautiful-dnd";
 import { DictionarySection } from "./DictionarySection";
 import { EditableClueArea } from "./EditableClueArea";
 import { dictionary } from "../common/constants";
 import { DnDState, WordType } from "../common/types";
 import { mapValues } from "../common/utils";
+import firebase from "firebase";
 
 function handleDropResult(state: DnDState, result: DropResult): DnDState {
   const { source, destination } = result;
@@ -56,6 +57,10 @@ export function ClueMaster() {
     clues: [],
     ...DRAGGABLE_DICTIONARY,
   });
+
+  useEffect(() => {
+    firebase.database().ref("clues/TEST/red").set(clues);
+  }, [clues]);
 
   const onDragEnd = useCallback(
     (result: DropResult) =>
