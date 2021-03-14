@@ -17,6 +17,7 @@
     "postcss": "^7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-flip-toolkit": "^7.0.13",
     "react-scripts": "4.0.3",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "^4.2.3",
