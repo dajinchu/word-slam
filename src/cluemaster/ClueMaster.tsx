@@ -5,7 +5,7 @@ import { EditableClueArea } from "./EditableClueArea";
 import { dictionary } from "../common/constants";
 import { DnDState, WordType } from "../common/types";
 import { mapValues } from "../common/utils";
-import firebase from "firebase";
+import { db } from "../common/db";
 
 function handleDropResult(state: DnDState, result: DropResult): DnDState {
   const { source, destination } = result;
@@ -59,7 +59,7 @@ export function ClueMaster() {
   });
 
   useEffect(() => {
-    firebase.database().ref("clues/TEST/red").set(clues);
+    db.setClues('TEST', 'red', clues);
   }, [clues]);
 
   const onDragEnd = useCallback(

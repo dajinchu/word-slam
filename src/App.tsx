@@ -1,22 +1,52 @@
-import React, { useState } from "react";
-import { ClueMaster } from "./cluemaster/ClueMaster";
-import { Guesser } from "./guesser/Guesser";
+import React, { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import firebase from "firebase/app";
+import { Home } from "./home/Home";
+import { navigate, RouteComponentProps, Router } from "@reach/router";
+import { Room } from "./room/Room";
+import { db } from "./common/db";
 
 function App() {
-  const [role, setRole] = useState("none");
+  const [user, loading, error] = useAuthState(firebase.auth());
+  useEffect(() => {
+    db.userId = user?.uid || null;
+    if (!user && !loading) {
+      firebase
+        .auth()
+        .signInAnonymously()
+        .catch((e) => console.log(e));
+    }
+  }, [user, loading]);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {role === "none" && (
-        <div>
-          <button onClick={() => setRole("cluemaster")}>Cluemaster</button>
-          <button onClick={() => setRole("guesser")}>Guesser</button>
-        </div>
-      )}
-      {role === "guesser" && <Guesser />}
-      {role === "cluemaster" && <ClueMaster />}
-    </div>
+    <Router>
+      <Home path="/" />
+      <ValidatePath
+        path="/:roomId"
+        validate={({ roomId }) =>
+          roomId?.length === 4 && roomId.match(/([A-Z]){4}/) !== null
+        }
+        component={Room}
+      />
+    </Router>
   );
+}
+
+interface ValidatePathProps<T> extends RouteComponentProps {
+  component: (props: RouteComponentProps & T) => JSX.Element | null;
+  validate: (a: Partial<T>) => boolean;
+}
+function ValidatePath<T>({
+  component,
+  validate,
+  ...rest
+}: ValidatePathProps<T>) {
+  if (validate(rest as Partial<T>)) {
+    return <>{component(rest as RouteComponentProps & T)}</>;
+  } else {
+    navigate("/");
+    return null;
+  }
 }
 
 export default App;

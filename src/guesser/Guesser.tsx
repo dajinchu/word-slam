@@ -3,16 +3,16 @@ import { Flipped, Flipper } from "react-flip-toolkit";
 import { WordCard } from "../common/Cards";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { DraggableWord } from "../common/types";
-import firebase from "firebase";
+import { db } from "../common/db";
 
 export function Guesser() {
   const [rawclues, loading, error] = useObjectVal<DraggableWord[]>(
-    firebase.database().ref("clues/TEST/red")
+    db.ref("clues/TEST/red")
   );
   const clues: DraggableWord[] = rawclues || [];
 
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col min-h-screen">
+    <div className="max-w-screen-xl mx-auto">
       <Flipper
         flipKey={clues.map((w) => w.id).join("-")}
         className="flex flex-row h-28 z-10"

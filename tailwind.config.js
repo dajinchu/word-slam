@@ -8,12 +8,15 @@ module.exports = {
         verb: "#9CC9B5",
         preposition: "#F2D0A6",
         adjective: "#E5B8EA",
-        primary: "#638475",
+        primary: {
+          DEFAULT: "#40775E",
+          dark: "#396A54",
+        },
       },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

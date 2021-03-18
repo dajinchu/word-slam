@@ -1,0 +1,4 @@
+- [ ] Center clue area and get rid of empty slots?
+- [ ] Clue area mobile friendly
+- [ ] Little helper text eveerwhere
+- [ ] Guesser view design
