@@ -1,13 +1,13 @@
 import React from "react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import { Button } from "../common/Button";
-import { db } from "../common/db";
 import { Rules } from "../common/Rules";
-import { RoomPlayers, Team, otherTeam } from "../common/types";
+import { RoomPlayers, Team } from "../common/types";
 import { pickBy } from "../common/utils";
 import { NameModal } from "./NameModal";
-import { Room as RoomInfo } from "../common/types";
 import { Blob } from "./Blob";
+import { useUser } from "../common/useUser";
+import { RoomClass } from "./useRoom";
 
 // Get the cluemasters, defaulting to the first player if cluemaster is unset or incorrect
 function getClueMaster(
@@ -21,11 +21,20 @@ function getClueMaster(
   );
 }
 
-export function Lobby({ roomId, room }: { roomId: string; room: RoomInfo }) {
-  const players = room.players || {};
-  const currPlayer = players[db.userId];
-  const blueClueMaster = getClueMaster(players, room.cluemasters?.blue, "blue");
-  const redClueMaster = getClueMaster(players, room.cluemasters?.red, "red");
+export function Lobby({
+  roomId,
+  room,
+}: {
+  roomId: string;
+  room: RoomClass;
+}) {
+  const [user] = useUser();
+  const players = room.room.players || {};
+  // const blueClueMaster = getClueMaster(players, room.cluemasters?.blue, "blue");
+  // const redClueMaster = getClueMaster(players, room.cluemasters?.red, "red");
+  if(!user) {
+    return null;
+  }
 
   return (
     <>
@@ -54,14 +63,14 @@ export function Lobby({ roomId, room }: { roomId: string; room: RoomInfo }) {
           className="sm:col-start-2 sm:row-span-2 py-6"
         >
           <TeamRoster
-            currPlayer={db.userId}
+            currPlayer={user.uid}
             players={pickBy(players, ({ team }) => team === "red")}
-            cluemaster={redClueMaster}
+            cluemaster={room.room.cluemasters?.red}
           />
           <TeamRoster
-            currPlayer={db.userId}
+            currPlayer={user.uid}
             players={pickBy(players, ({ team }) => team === "blue")}
-            cluemaster={blueClueMaster}
+            cluemaster={room.room.cluemasters?.blue}
           />
         </Flipper>
 
@@ -72,22 +81,12 @@ export function Lobby({ roomId, room }: { roomId: string; room: RoomInfo }) {
               <Rules />
             </div>
           </div>
-          {currPlayer && (
+          {room.currPlayer && (
             <div className="grid grid-cols-2 grid-rows-2 h-32 auto-cols-max gap-y-4 gap-x-7">
-              <Button
-                size="fill"
-                color="secondary"
-                onClick={() => db.beCluemaster(roomId, currPlayer.team)}
-              >
+              <Button size="fill" color="secondary" onClick={room.beCluemaster}>
                 be clue master
               </Button>
-              <Button
-                size="fill"
-                color="secondary"
-                onClick={() =>
-                  db.switchTeam(roomId, otherTeam(currPlayer.team))
-                }
-              >
+              <Button size="fill" color="secondary" onClick={room.switchTeam}>
                 join other team
               </Button>
               <div className="col-span-2 flex items-stretch">
@@ -98,9 +97,9 @@ export function Lobby({ roomId, room }: { roomId: string; room: RoomInfo }) {
         </div>
       </div>
       <NameModal
-        visible={!currPlayer}
+        visible={!room.currPlayer}
         onClose={async ({ name }) => {
-          await db.joinRoom(roomId, name);
+          await room.joinRoom(name);
         }}
       />
     </>

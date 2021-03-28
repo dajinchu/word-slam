@@ -16,10 +16,10 @@ export function mapValues<T, R, K extends string | number>(
   );
 }
 
-export function pickBy<T>(obj: Record<string, T>, picker: (t: T) => boolean) {
+export function pickBy<T>(obj: Record<string, T>, picker: (t: T, k?: string) => boolean) {
   const ret: Record<string, T> = {};
   Object.entries(obj).forEach(([key, value]) => {
-    if (picker(value)) {
+    if (picker(value, key)) {
       ret[key] = value;
     }
   });
