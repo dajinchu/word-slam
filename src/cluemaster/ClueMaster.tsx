@@ -52,14 +52,14 @@ const DRAGGABLE_DICTIONARY: DnDState = mapValues(
     )
 );
 
-export function ClueMaster() {
+export function ClueMaster({roomId}: {roomId: string}) {
   const [{ clues, ...dictionary }, setCards] = useState<DnDState>({
     clues: [],
     ...DRAGGABLE_DICTIONARY,
   });
 
   useEffect(() => {
-    db.setClues('TEST', 'red', clues);
+    db.setClues(roomId, 'red', clues);
   }, [clues]);
 
   const onDragEnd = useCallback(

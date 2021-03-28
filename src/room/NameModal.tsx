@@ -52,6 +52,7 @@ export function NameModal({
                           type="text"
                           name="name"
                           id="name"
+                          autoFocus
                           ref={register({
                             required: true,
                             maxLength: 12,

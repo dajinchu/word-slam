@@ -20,14 +20,13 @@ export const teams = ["red", "blue"] as const;
 export type Team = typeof teams[number];
 export const otherTeam = (team: Team) => (team === "red" ? "blue" : "red");
 
-export type PlayerInfo = { nickname: string; team: Team };
-export type RoomPlayers = Record<string, PlayerInfo>;
+export type PlayerInfo = { nickname: string; team: Team, id: string };
 
-export type RoomStatus = "lobby";
+export type RoomStatus = "lobby" | "game";
 export type RoomCluemasters = { red?: string; blue?: string };
 
 export type Room = {
   status: RoomStatus;
-  players?: RoomPlayers;
+  players: PlayerInfo[];
   cluemasters?: RoomCluemasters;
 };

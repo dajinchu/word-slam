@@ -2,37 +2,18 @@ import React from "react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import { Button } from "../common/Button";
 import { Rules } from "../common/Rules";
-import { RoomPlayers, Team } from "../common/types";
-import { pickBy } from "../common/utils";
+import { PlayerInfo } from "../common/types";
 import { NameModal } from "./NameModal";
 import { Blob } from "./Blob";
 import { useUser } from "../common/useUser";
 import { RoomClass } from "./useRoom";
 
-// Get the cluemasters, defaulting to the first player if cluemaster is unset or incorrect
-function getClueMaster(
-  players: RoomPlayers,
-  cluemaster: string | undefined,
-  team: Team
-): string | undefined {
-  const setRed = !!cluemaster && !!players?.[cluemaster] && cluemaster;
-  return (
-    setRed || Object.entries(players).find(([k, p]) => p.team === team)?.[0]
-  );
-}
-
-export function Lobby({
-  roomId,
-  room,
-}: {
-  roomId: string;
-  room: RoomClass;
-}) {
+export function Lobby({ roomId, room }: { roomId: string; room: RoomClass }) {
   const [user] = useUser();
-  const players = room.room.players || {};
+  const players = room.players || {};
   // const blueClueMaster = getClueMaster(players, room.cluemasters?.blue, "blue");
   // const redClueMaster = getClueMaster(players, room.cluemasters?.red, "red");
-  if(!user) {
+  if (!user) {
     return null;
   }
 
@@ -64,13 +45,13 @@ export function Lobby({
         >
           <TeamRoster
             currPlayer={user.uid}
-            players={pickBy(players, ({ team }) => team === "red")}
-            cluemaster={room.room.cluemasters?.red}
+            players={players.filter(({ team }) => team === "red")}
+            cluemaster={room.cluemasters?.red}
           />
           <TeamRoster
             currPlayer={user.uid}
-            players={pickBy(players, ({ team }) => team === "blue")}
-            cluemaster={room.room.cluemasters?.blue}
+            players={players.filter(({ team }) => team === "blue")}
+            cluemaster={room.cluemasters?.blue}
           />
         </Flipper>
 
@@ -90,7 +71,7 @@ export function Lobby({
                 join other team
               </Button>
               <div className="col-span-2 flex items-stretch">
-                <Button size="fill">start game</Button>
+                <Button size="fill" onClick={room.startGame}>start game</Button>
               </div>
             </div>
           )}
@@ -111,12 +92,12 @@ const TeamRoster = ({
   currPlayer,
   cluemaster,
 }: {
-  players: RoomPlayers;
+  players: PlayerInfo[];
   currPlayer: string;
   cluemaster?: string;
 }) => (
   <div className="flex flex-wrap">
-    {Object.entries(players).map(([id, { nickname, team }]) => (
+    {players.map(({ id, nickname, team }) => (
       <Flipped key={nickname} flipId={nickname}>
         <div className={team === "red" ? "text-redteam" : "text-blueteam"}>
           <Blob

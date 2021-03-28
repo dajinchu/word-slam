@@ -1,0 +1,39 @@
+
+/* Element | https://console.firebase.google.com/project/word-slam-ac542/database/word-slam-ac542-default-rtdb/rules */
+
+.multi-database-card > multi-database-card:nth-child(2) > fb-multi-resource-card:nth-child(2) > fb-master-detail-card:nth-child(1) > md-single-grid:nth-child(1) > md-card:nth-child(1) {
+  width: 100%;
+}
+
+/* m=b | https://www.gstatic.com/_/fireconsole/_/ss/k=fireconsole.ngh.-itp6v5hpjob9.L.F4.O/am=CIAAYJ9JF4DADw/d=1/dg=0/br=1/ct=zgms/rs=AON9Pun3bg1FNA8TddeiPfjGELJJYXGtyQ/m=b */
+
+@media only screen and (min-width: 920px) {
+  .c5e-nav-expanded mat-single-grid [mat-cell="12"]:not(td), .c5e-nav-expanded mat-single-grid [md-cell="12"], .c5e-nav-expanded md-single-grid [mat-cell="12"]:not(td), .c5e-nav-expanded md-single-grid [md-cell="12"], .c5e-nav-expanded [mat-single-grid] [mat-cell="12"]:not(td), .c5e-nav-expanded [mat-single-grid] [md-cell="12"], .c5e-nav-expanded [md-single-grid] [mat-cell="12"]:not(td), .c5e-nav-expanded [md-single-grid] [md-cell="12"] {
+    /* max-width: 936px; */
+  }
+  .c5e-nav-expanded mat-single-grid, .c5e-nav-expanded md-single-grid, .c5e-nav-expanded [mat-single-grid], .c5e-nav-expanded [md-single-grid] {
+    /* max-width: 1280px; */
+  }
+}
+
+mat-single-grid, md-single-grid, [mat-single-grid], [md-single-grid] {
+  /* justify-content: center; */
+  justify-content: stretch;
+}
+
+/* Inline #51 | https://console.firebase.google.com/project/word-slam-ac542/database/word-slam-ac542-default-rtdb/rules */
+
+.multi-database-card .firebase-rules {
+  /* max-width: 1256px; */
+}
+
+.firebase-rules {
+  /* max-width: 1176px; */
+  /* max-height: 75vh; */
+}
+
+/* Element | https://console.firebase.google.com/project/word-slam-ac542/database/word-slam-ac542-default-rtdb/rules */
+
+.firebase-rules {
+  flex-grow: 1;
+}

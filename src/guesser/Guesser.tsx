@@ -5,9 +5,9 @@ import { useObjectVal } from "react-firebase-hooks/database";
 import { DraggableWord } from "../common/types";
 import { db } from "../common/db";
 
-export function Guesser() {
+export function Guesser({roomId}: {roomId: string}) {
   const [rawclues, loading, error] = useObjectVal<DraggableWord[]>(
-    db.ref("clues/TEST/red")
+    db.ref(`clues/${roomId}/red`)
   );
   const clues: DraggableWord[] = rawclues || [];
 
