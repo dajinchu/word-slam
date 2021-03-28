@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { db } from "../common/db";
 import {
@@ -72,12 +73,10 @@ export class RoomClass {
     if (!this.currPlayer) {
       return;
     }
-    console.log("leaving");
     const idx = this.room.players.findIndex(
       (p) => p.id === this.currPlayer?.id
     );
     this.room.players.splice(idx, 1);
-    console.log(this.room.players, idx);
     await Promise.all([
       this.ref(`/players/${this.userId}`).remove(),
       this.fixCluemaster(),
@@ -126,7 +125,7 @@ export class RoomClass {
   };
 
   startGame = async () => {
-    await this.ref("/status").set("game");
+    await this.ref("/status").set("picking");
   };
 }
 
@@ -152,8 +151,11 @@ export function useRoom(roomId: string): UseRoomReturn {
     }
   );
   const [user, authloading, autherror] = useUser();
-  const room =
-    roomData && user ? new RoomClass(roomId, user.uid, roomData) : undefined;
+  const room = useMemo(
+    () =>
+      roomData && user ? new RoomClass(roomId, user.uid, roomData) : undefined,
+    [roomData]
+  );
   useBeforeunload(() => {
     room?.leaveRoom();
   });

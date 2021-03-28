@@ -1,7 +1,7 @@
 import { WordType } from "./types";
 
 export const dictionary: Record<WordType, string[]> = {
-  spacer: [''],
+  spacer: [""],
   noun: [
     "man",
     "woman",
@@ -136,6 +136,10 @@ export const dictionary: Record<WordType, string[]> = {
   ],
 };
 
+export function randStory() {
+  const all = Object.values(stories).flat();
+  return all[Math.floor(Math.random() * all.length)];
+}
 export const stories = {
   "Animals, Plants, Creatures": [
     "Mammoth",
