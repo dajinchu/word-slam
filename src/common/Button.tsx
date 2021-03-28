@@ -8,18 +8,20 @@ export const Button = ({
   children,
   onClick,
   size = 'fit',
-  type = "button"
+  type = "button",
+  color = "primary"
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   size?: 'md' | 'fit' | 'fill';
   type?: "button" | "submit";
+  color?: "primary" | "secondary"
 }) => (
   <button
     type={type}
     onClick={onClick}
-    className={`bg-primary rounded-md shadow-sm text-white flex items-center justify-center py-2 px-4 ${sizes[size]}
-  hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2`}
+    className={`bg-${color} rounded-md shadow-sm text-white flex items-center justify-center py-2 px-4 ${sizes[size]}
+  hover:bg-${color}-dark focus:outline-none focus:ring-2 focus:ring-offset-2`}
   >
     {children}
   </button>

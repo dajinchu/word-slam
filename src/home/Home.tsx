@@ -1,4 +1,4 @@
-import {  RouteComponentProps, useNavigate } from "@reach/router";
+import { RouteComponentProps, useNavigate } from "@reach/router";
 import React from "react";
 import { Button } from "../common/Button";
 import { db } from "../common/db";
@@ -16,6 +16,7 @@ export function Home(props: RouteComponentProps) {
 
       <div className="flex flex-col items-center mt-16">
         <Button
+          size="md"
           onClick={async () => {
             const id = await db.createRoom();
             navigate(`/${id}`);
@@ -24,7 +25,9 @@ export function Home(props: RouteComponentProps) {
           new game
         </Button>
         <div className="mt-8" />
-        <Button onClick={() => {}}>join game</Button>
+        <Button size="md" onClick={() => {}}>
+          join game
+        </Button>
       </div>
       <div className="text-center mt-16">
         This is an unofficial online version of the original board game

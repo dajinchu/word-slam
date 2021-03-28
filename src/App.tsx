@@ -9,7 +9,7 @@ import { db } from "./common/db";
 function App() {
   const [user, loading, error] = useAuthState(firebase.auth());
   useEffect(() => {
-    db.userId = user?.uid || null;
+    db.userId = user?.uid || '';
     if (!user && !loading) {
       firebase
         .auth()

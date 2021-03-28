@@ -16,9 +16,31 @@ export function mapValues<T, R, K extends string | number>(
   );
 }
 
+export function pickBy<T>(obj: Record<string, T>, picker: (t: T) => boolean) {
+  const ret: Record<string, T> = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    if (picker(value)) {
+      ret[key] = value;
+    }
+  });
+  return ret;
+}
+
 /**
  * Do fn n times and return results
  */
 export function times<A, B>(n: number, fn: (a: A) => B): B[] {
   return [...Array(n)].map(fn);
+}
+
+/* Randomize array in-place using Durstenfeld shuffle algorithm */
+export function shuffle<T>(array: T[]): T[] {
+  const ret = [...array];
+  for (var i = ret.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = ret[i];
+    ret[i] = ret[j];
+    ret[j] = temp;
+  }
+  return ret;
 }
