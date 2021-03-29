@@ -1,7 +1,6 @@
 import React from "react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import { Button } from "../common/Button";
-import { Rules } from "../common/Rules";
 import { PlayerInfo } from "../common/types";
 import { NameModal } from "./NameModal";
 import { Blob } from "./Blob";

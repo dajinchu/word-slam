@@ -7,9 +7,9 @@ import { Room } from "./room/Room";
 import { db } from "./common/db";
 
 function App() {
-  const [user, loading, error] = useAuthState(firebase.auth());
+  const [user, loading] = useAuthState(firebase.auth());
   useEffect(() => {
-    db.setUserId(user?.uid || '');
+    db.setUserId(user?.uid || "");
     if (!user && !loading) {
       firebase
         .auth()

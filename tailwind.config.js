@@ -20,8 +20,8 @@ module.exports = {
         blueteam: "#60A5FA",
       },
       gridTemplateRows: {
-        'minfr': 'min-content 1fr',
-      }
+        minfr: "min-content 1fr",
+      },
     },
   },
   variants: {

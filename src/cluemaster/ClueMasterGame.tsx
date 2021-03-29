@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { DragDropContext, DropResult } from "@dajinchu/react-beautiful-dnd";
 import { DictionarySection } from "./DictionarySection";
 import { EditableClueArea } from "./EditableClueArea";
@@ -44,7 +44,7 @@ const DRAGGABLE_DICTIONARY: DnDState = mapValues(
     )
 );
 
-const empty : DraggableWord[] = []
+const empty: DraggableWord[] = [];
 export function ClueMasterGame({
   roomId,
   team,
@@ -52,7 +52,7 @@ export function ClueMasterGame({
   roomId: string;
   team: Team;
 }) {
-  const [dbClues, loading] = useObjectVal<DraggableWord[]>(
+  const [dbClues] = useObjectVal<DraggableWord[]>(
     db.ref(`clues/${roomId}/${team}`)
   );
   const clues = dbClues || empty;

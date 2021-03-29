@@ -18,7 +18,7 @@ export function GuesserGame({
   const currTeam = room.currPlayer?.team;
   const teammates = room.players.filter((p) => p.team === currTeam);
   const team = teammates[0].team;
-  const [rawclues, loading, error] = useObjectVal<DraggableWord[]>(
+  const [rawclues] = useObjectVal<DraggableWord[]>(
     db.ref(`clues/${roomId}/${team}`)
   );
   const [user] = useUser();
@@ -31,19 +31,21 @@ export function GuesserGame({
     <div className="max-w-screen-xl mx-auto flex flex-col items-center">
       {clues ? (
         <>
-        <Flipper
-          flipKey={clues.map((w) => w.id).join("-")}
-          className="flex flex-row mt-10 h-28 z-10"
-        >
-          {clues.map((clue) => (
-            <Flipped key={clue.id} flipId={clue.id}>
-              <div className="p-0.5 select-none">
-                <WordCard word={clue.word} type={clue.type} />
-              </div>
-            </Flipped>
-          ))}
-        </Flipper>
-        <div>Guess the secret using the hints! Shout them out! Guess wildly!</div>
+          <Flipper
+            flipKey={clues.map((w) => w.id).join("-")}
+            className="flex flex-row mt-10 h-28 z-10"
+          >
+            {clues.map((clue) => (
+              <Flipped key={clue.id} flipId={clue.id}>
+                <div className="p-0.5 select-none">
+                  <WordCard word={clue.word} type={clue.type} />
+                </div>
+              </Flipped>
+            ))}
+          </Flipper>
+          <div>
+            Guess the secret using the hints! Shout them out! Guess wildly!
+          </div>
         </>
       ) : (
         <div>Waiting for you team's cluemaster to put clues here!</div>

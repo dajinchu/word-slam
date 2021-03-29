@@ -19,7 +19,9 @@ export function WordCard({
   return (
     <div
       className={`w-20 h-20 rounded 
-      ${shadow && "shadow"} ${bgClass[type]} border flex justify-center items-center`}
+      ${shadow && "shadow"} ${
+        bgClass[type]
+      } border flex justify-center items-center`}
     >
       <span className="text-center text-sm">{word}</span>
     </div>

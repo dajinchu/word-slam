@@ -19,7 +19,7 @@ function patchStyle(
   }
   const { moveTo } = snapshot.dropAnimation;
   // Patch the style to offset for the justify-center
-  const translate = `translate(${moveTo.x-82/2}px, ${moveTo.y}px)`;
+  const translate = `translate(${moveTo.x - 82 / 2}px, ${moveTo.y}px)`;
 
   return {
     ...style,

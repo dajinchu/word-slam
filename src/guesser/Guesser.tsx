@@ -4,9 +4,12 @@ import { GuesserWaiting } from "./GuesserWaiting";
 import { GuesserGame } from "./GuesserGame";
 
 export function Guesser({ roomId, room }: { roomId: string; room: RoomClass }) {
-  switch(room.status) {
-    case "picking": return <GuesserWaiting/>
-    case "game": return <GuesserGame roomId={roomId} room={room}/>
-    default: return null;
+  switch (room.status) {
+    case "picking":
+      return <GuesserWaiting />;
+    case "game":
+      return <GuesserGame roomId={roomId} room={room} />;
+    default:
+      return null;
   }
 }

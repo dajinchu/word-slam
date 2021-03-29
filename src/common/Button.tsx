@@ -1,21 +1,21 @@
 const sizes = {
-  'md' : 'w-48 h-10',
-  'fit': '',
-  'fill': 'w-full'
-}
+  md: "w-48 h-10",
+  fit: "",
+  fill: "w-full",
+};
 //TODO: This would be easier as a styled component tbh
 export const Button = ({
   children,
   onClick,
-  size = 'fit',
+  size = "fit",
   type = "button",
-  color = "primary"
+  color = "primary",
 }: {
   children: React.ReactNode;
   onClick?: () => void;
-  size?: 'md' | 'fit' | 'fill';
+  size?: "md" | "fit" | "fill";
   type?: "button" | "submit";
-  color?: "primary" | "secondary"
+  color?: "primary" | "secondary";
 }) => (
   <button
     type={type}

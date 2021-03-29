@@ -10,7 +10,6 @@ import {
   Team,
   teams,
 } from "../common/types";
-import { useBeforeunload } from "../common/useBeforeunload";
 import { useUser } from "../common/useUser";
 
 export class RoomClass {
@@ -145,22 +144,19 @@ function transformRoom(room: any): Room {
   return { ...room, players };
 }
 export function useRoom(roomId: string): UseRoomReturn {
-  const [roomData, loading, error] = useObjectVal<Room>(
-    db.ref(`rooms/${roomId}`),
-    {
-      transform: transformRoom,
-    }
-  );
-  const [user, authloading, autherror] = useUser();
+  const [roomData, loading] = useObjectVal<Room>(db.ref(`rooms/${roomId}`), {
+    transform: transformRoom,
+  });
+  const [user, authloading] = useUser();
   const room = useMemo(
     () =>
       roomData && user ? new RoomClass(roomId, user.uid, roomData) : undefined,
     [roomData, roomId, user]
   );
   // useBeforeunload(() => {
-    // room?.leaveRoom();
+  // room?.leaveRoom();
   // });
-  console.log(room, user)
+  console.log(room, user);
 
   return {
     loading: loading || authloading,

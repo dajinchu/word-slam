@@ -1,7 +1,4 @@
-import {
-  Team,
-  DraggableWord,
-} from "./types";
+import { Team, DraggableWord } from "./types";
 import firebase from "firebase/app";
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
