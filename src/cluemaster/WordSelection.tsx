@@ -5,6 +5,9 @@ import { randStory } from "../common/constants";
 import { db } from "../common/db";
 import { RoomCluemasters } from "../common/types";
 
+async function newSecret(roomId: string) {
+  await db.ref(`secrets/${roomId}`).set(randStory());
+}
 export function WordSelection({
   roomId,
   cluemasters,
@@ -14,32 +17,33 @@ export function WordSelection({
 }) {
   const [secret, loading] = useObjectVal<string>(db.ref(`secrets/${roomId}`));
 
-  async function newSecret() {
-    await db.ref(`secrets/${roomId}`).set(randStory());
-  }
-
   useEffect(() => {
     if (!loading && !secret) {
-      newSecret();
+      newSecret(roomId);
     }
-  }, [secret, loading]);
+  }, [secret, loading, roomId]);
 
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col">
       <div className="bg-primary h-40 flex flex-col items-center justify-center">
-        <div className="mb-2 text-sm text-white">the secret is</div>
-        <div className="text-2xl text-white font-bold">{secret}</div>
+        <div className="text-sm text-white">the secret is</div>
+        <div className="text-3xl text-white font-bold">{secret}</div>
       </div>
-      <div className="mt-4 mb-10">
+      <div className="mt-4 mb-10 px-5">
         Talk to the other cluemaster to agree on this secret! If you want a new
         one, hit veto!
       </div>
       <div className="flex justify-center">
-        <Button onClick={() => newSecret()} size="md" color="secondary">
+        <Button onClick={() => newSecret(roomId)} size="md" color="secondary">
           Veto
         </Button>
         <div className="ml-10" />
-        <Button onClick={async () => await db.ref(`rooms/${roomId}/status`).set('game')} size="md">
+        <Button
+          onClick={async () =>
+            await db.ref(`rooms/${roomId}/status`).set("game")
+          }
+          size="md"
+        >
           Start
         </Button>
       </div>

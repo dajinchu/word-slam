@@ -27,5 +27,6 @@ export function useBeforeunload(handler: (ev: BeforeUnloadEvent) => any) {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeunload);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }

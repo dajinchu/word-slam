@@ -95,23 +95,24 @@ export class RoomClass {
   };
 
   private async fixCluemaster() {
-    await Promise.all(
-      teams.map(async (team) => {
-        console.log("fixing", team);
-        const existsClumeaster = this.room.players.find(
-          (p) => p.team === team && p.id === this.room.cluemasters?.[team]
-        );
-        console.log("pllayers", this.room.players);
-        if (!existsClumeaster) {
-          // make someone else the cluemaster if someone is there
-          const newCluemaster = this.room.players.find((p) => p.team === team);
-          console.log(`making ${newCluemaster?.id} CM for ${team}`);
-          if (newCluemaster) {
-            await this.ref(`/cluemasters/${team}`).set(newCluemaster.id);
+    if (this.status === "lobby") {
+      await Promise.all(
+        teams.map(async (team) => {
+          const existsClumeaster = this.room.players.find(
+            (p) => p.team === team && p.id === this.room.cluemasters?.[team]
+          );
+          if (!existsClumeaster) {
+            // make someone else the cluemaster if someone is there
+            const newCluemaster = this.room.players.find(
+              (p) => p.team === team
+            );
+            if (newCluemaster) {
+              await this.ref(`/cluemasters/${team}`).set(newCluemaster.id);
+            }
           }
-        }
-      })
-    );
+        })
+      );
+    }
   }
 
   beCluemaster = async () => {
@@ -154,11 +155,12 @@ export function useRoom(roomId: string): UseRoomReturn {
   const room = useMemo(
     () =>
       roomData && user ? new RoomClass(roomId, user.uid, roomData) : undefined,
-    [roomData]
+    [roomData, roomId, user]
   );
-  useBeforeunload(() => {
-    room?.leaveRoom();
-  });
+  // useBeforeunload(() => {
+    // room?.leaveRoom();
+  // });
+  console.log(room, user)
 
   return {
     loading: loading || authloading,

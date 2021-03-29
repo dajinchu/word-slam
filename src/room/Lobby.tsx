@@ -7,6 +7,7 @@ import { NameModal } from "./NameModal";
 import { Blob } from "./Blob";
 import { useUser } from "../common/useUser";
 import { RoomClass } from "./useRoom";
+import { RulesCard } from "../common/RulesCard";
 
 export function Lobby({ roomId, room }: { roomId: string; room: RoomClass }) {
   const [user] = useUser();
@@ -56,12 +57,7 @@ export function Lobby({ roomId, room }: { roomId: string; room: RoomClass }) {
         </Flipper>
 
         <div className="sticky inset-x-6 bottom-6 md:static md:w-full md:max-w-sm">
-          <div className="rounded-md border bg-white mb-7">
-            <div className="text-lg p-3 border-b">Quick rules</div>
-            <div className="p-3">
-              <Rules />
-            </div>
-          </div>
+          <RulesCard />
           {room.currPlayer && (
             <div className="grid grid-cols-2 grid-rows-2 h-32 auto-cols-max gap-y-4 gap-x-7">
               <Button size="fill" color="secondary" onClick={room.beCluemaster}>
@@ -71,7 +67,9 @@ export function Lobby({ roomId, room }: { roomId: string; room: RoomClass }) {
                 join other team
               </Button>
               <div className="col-span-2 flex items-stretch">
-                <Button size="fill" onClick={room.startGame}>start game</Button>
+                <Button size="fill" onClick={room.startGame}>
+                  start game
+                </Button>
               </div>
             </div>
           )}

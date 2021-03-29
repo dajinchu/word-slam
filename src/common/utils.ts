@@ -29,7 +29,7 @@ export function pickBy<T>(obj: Record<string, T>, picker: (t: T, k?: string) => 
 /**
  * Do fn n times and return results
  */
-export function times<A, B>(n: number, fn: (a: A) => B): B[] {
+export function times<B>(n: number, fn: (a: number) => B): B[] {
   return [...Array(n)].map(fn);
 }
 
