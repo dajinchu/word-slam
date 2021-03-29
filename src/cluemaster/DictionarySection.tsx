@@ -14,11 +14,11 @@ function patchStyle(
   style: DraggingStyle | NotDraggingStyle | undefined,
   snapshot: DraggableStateSnapshot
 ): DraggingStyle | NotDraggingStyle | undefined {
-  if (!snapshot.isDropAnimating || !snapshot.dropAnimation) {
+  if (!snapshot.isDropAnimating || !snapshot.dropAnimation || snapshot.draggingOver !== 'clues') {
     return style;
   }
   const { moveTo } = snapshot.dropAnimation;
-  // Patch the style to offset for the justify-center
+  // Patch the style to offset for the justify-center in clues
   const translate = `translate(${moveTo.x - 82 / 2}px, ${moveTo.y}px)`;
 
   return {

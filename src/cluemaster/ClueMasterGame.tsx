@@ -60,13 +60,17 @@ export function ClueMasterGame({
     dw.filter((w) => !clues?.find((w2) => w.id === w2.id))
   );
 
+  const updateClues = useCallback(async (nc) => db.setClues(roomId, team, nc), [
+    roomId,
+    team,
+  ]);
   const onDragEnd = useCallback(
     async (result: DropResult) => {
       const newClues = handleDropResult(clues, dictionary, result);
       // TODO: Implmement local state caching SWR style
-      await db.setClues(roomId, team, newClues);
+      await updateClues(newClues);
     },
-    [clues, dictionary, roomId, team]
+    [clues, dictionary, updateClues]
   );
 
   if (typeof clues === "undefined") {
@@ -84,7 +88,7 @@ export function ClueMasterGame({
             <div className="text-white text-sm">The word is</div>
             <div className="text-white text-2xl font-bold">shower curtain</div>
           </div>
-          <EditableClueArea clues={clues} />
+          <EditableClueArea clues={clues} updateClues={updateClues} />
           <div className="px-4 py-2 text-lg border-t border-b">
             Clue Dictionary
           </div>
