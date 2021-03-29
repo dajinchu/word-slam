@@ -14,7 +14,11 @@ function patchStyle(
   style: DraggingStyle | NotDraggingStyle | undefined,
   snapshot: DraggableStateSnapshot
 ): DraggingStyle | NotDraggingStyle | undefined {
-  if (!snapshot.isDropAnimating || !snapshot.dropAnimation || snapshot.draggingOver !== 'clues') {
+  if (
+    !snapshot.isDropAnimating ||
+    !snapshot.dropAnimation ||
+    snapshot.draggingOver !== "clues"
+  ) {
     return style;
   }
   const { moveTo } = snapshot.dropAnimation;
