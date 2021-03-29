@@ -2,6 +2,10 @@ const bg = {
   primary: 'bg-primary',
   secondary: 'bg-secondary'
 }
+const bgHover = {
+  primary: 'hover:bg-primary',
+  secondary: 'hover:bg-secondary'
+}
 const sizes = {
   md: "w-48 h-10",
   fit: "",
@@ -25,7 +29,7 @@ export const Button = ({
     type={type}
     onClick={onClick}
     className={`${bg[color]} rounded-md shadow-sm text-white flex items-center justify-center py-2 px-4 ${sizes[size]}
-  hover:${bg[color]}-dark focus:outline-none focus:ring-2 focus:ring-offset-2`}
+  ${bgHover[color]}-dark focus:outline-none focus:ring-2 focus:ring-offset-2`}
   >
     {children}
   </button>
