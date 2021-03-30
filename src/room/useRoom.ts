@@ -17,6 +17,7 @@ export class RoomClass {
   public players;
   public cluemasters: RoomCluemasters;
   public status: RoomStatus;
+  public winner?: Team;
   constructor(
     public roomId: string,
     private userId: string,
@@ -32,6 +33,7 @@ export class RoomClass {
       red: this.getCluemaster("red"),
     };
     this.status = room.status;
+    this.winner = room.winner;
   }
 
   private ref(path: string) {
@@ -156,7 +158,6 @@ export function useRoom(roomId: string): UseRoomReturn {
   // useBeforeunload(() => {
   // room?.leaveRoom();
   // });
-  console.log(room, user);
 
   return {
     loading: loading || authloading,

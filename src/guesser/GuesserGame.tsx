@@ -29,7 +29,7 @@ export function GuesserGame({
   }
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col items-center">
-      {clues ? (
+      {clues.length > 0 ? (
         <>
           <Flipper
             flipKey={clues.map((w) => w.id).join("-")}
@@ -48,7 +48,7 @@ export function GuesserGame({
           </div>
         </>
       ) : (
-        <div>Waiting for you team's cluemaster to put clues here!</div>
+        <div className="mt-10">Waiting for you team's cluemaster ({room.players.find(p=>p.id===room.cluemasters?.[currTeam])?.nickname}) to put clues here!</div>
       )}
       <div
         className={`mt-20 w-96 flex flex-row flex-wrap justify-center ${

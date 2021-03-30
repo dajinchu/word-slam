@@ -22,11 +22,12 @@ export const otherTeam = (team: Team) => (team === "red" ? "blue" : "red");
 
 export type PlayerInfo = { nickname: string; team: Team; id: string };
 
-export type RoomStatus = "lobby" | "game" | "picking";
+export type RoomStatus = "lobby" | "game" | "picking" | "postgame";
 export type RoomCluemasters = { red?: string; blue?: string };
 
 export type Room = {
   status: RoomStatus;
   players: PlayerInfo[];
   cluemasters?: RoomCluemasters;
+  winner?: Team;
 };

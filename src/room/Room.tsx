@@ -3,6 +3,7 @@ import React from "react";
 import { ClueMaster } from "../cluemaster/ClueMaster";
 import { Guesser } from "../guesser/Guesser";
 import { Lobby } from "./Lobby";
+import { PostGame } from "./PostGame";
 import { useRoom } from "./useRoom";
 
 interface RoomProps extends RouteComponentProps {
@@ -11,14 +12,12 @@ interface RoomProps extends RouteComponentProps {
 export function Room({ roomId }: RoomProps) {
   const { loading, room } = useRoom(roomId);
   const status = room?.status;
-  console.log("room rendered with ", loading, room);
   if (loading) {
     return null;
   } else if (room) {
     const isCluemaster = Object.values(room.cluemasters || {}).includes(
       room.currPlayer?.id
     );
-    console.log("room", room);
     switch (status) {
       case "lobby":
         return <Lobby roomId={roomId} room={room} />;
@@ -29,6 +28,8 @@ export function Room({ roomId }: RoomProps) {
         ) : (
           <Guesser roomId={roomId} room={room} />
         );
+      case "postgame":
+        return <PostGame roomId={roomId} room={room} />
       default:
         return null;
     }

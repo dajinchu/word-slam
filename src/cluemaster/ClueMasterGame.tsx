@@ -7,6 +7,7 @@ import { DnDState, DraggableWord, Team, WordType } from "../common/types";
 import { mapValues } from "../common/utils";
 import { db } from "../common/db";
 import { useObjectVal } from "react-firebase-hooks/database";
+import { Button } from "../common/Button";
 
 function handleDropResult(
   clues: DraggableWord[],
@@ -52,6 +53,7 @@ export function ClueMasterGame({
   roomId: string;
   team: Team;
 }) {
+  const [secret] = useObjectVal<string>(db.ref(`secrets/${roomId}`));
   const [dbClues] = useObjectVal<DraggableWord[]>(
     db.ref(`clues/${roomId}/${team}`)
   );
@@ -73,20 +75,33 @@ export function ClueMasterGame({
     [clues, dictionary, updateClues]
   );
 
-  if (typeof clues === "undefined") {
+  if (typeof clues === "undefined" || !secret) {
     return null;
   }
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col min-h-screen">
       <DragDropContext onDragEnd={onDragEnd} autoScroll={false}>
-        <div className="bg-white sticky top-0">
+        <div className="bg-white sticky top-0 z-10">
           <div
-            className={`flex flex-col items-center py-3 w-full ${
+            className={`relative ${
               team === "red" ? "bg-redteam" : "bg-blueteam"
             }`}
           >
-            <div className="text-white text-sm">The word is</div>
-            <div className="text-white text-2xl font-bold">shower curtain</div>
+            <div className={`flex flex-col items-center py-3 w-full $`}>
+              <div className="text-white text-sm">The word is</div>
+              <div className="text-white text-2xl font-bold">{secret}</div>
+            </div>
+            <div className="absolute right-0 inset-y-0 flex items-center pr-5">
+              <Button
+                size="fill"
+                onClick={async () => {
+                  await db.ref(`rooms/${roomId}/winner`).set(team);
+                  await db.ref(`rooms/${roomId}/status`).set("postgame");
+                }}
+              >
+                Got It!
+              </Button>
+            </div>
           </div>
           <EditableClueArea clues={clues} updateClues={updateClues} />
           <div className="px-4 py-2 text-lg border-t border-b">
