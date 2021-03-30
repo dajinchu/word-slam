@@ -24,7 +24,7 @@ export function PostGame({
   );
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col min-h-screen">
-      <div className={`bg-${room.winner} w-full p-5 text-white mb-5`}>
+      <div className={`bg-${room.winner}team w-full p-5 text-white mb-5`}>
         {room.winner} team won!
         <div>
           the secret was <span className="text-2xl">{secret}</span>
