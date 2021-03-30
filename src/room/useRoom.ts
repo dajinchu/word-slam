@@ -136,7 +136,10 @@ interface UseRoomReturn {
   room?: RoomClass;
 }
 
-function transformRoom(room: any): Room {
+function transformRoom(room: any): Room | undefined {
+  if (!room) {
+    return;
+  }
   const players: PlayerInfo[] = Object.entries(
     (room.players as Record<string, PlayerInfo>) || {}
   ).map(([k, v]) => ({
@@ -146,7 +149,7 @@ function transformRoom(room: any): Room {
   return { ...room, players };
 }
 export function useRoom(roomId: string): UseRoomReturn {
-  const [roomData, loading] = useObjectVal<Room>(db.ref(`rooms/${roomId}`), {
+  const [roomData, loading] = useObjectVal<Room | undefined>(db.ref(`rooms/${roomId}`), {
     transform: transformRoom,
   });
   const [user, authloading] = useUser();

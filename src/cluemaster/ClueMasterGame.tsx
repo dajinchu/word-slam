@@ -94,6 +94,7 @@ export function ClueMasterGame({
             <div className="absolute right-0 inset-y-0 flex items-center pr-5">
               <Button
                 size="fill"
+                color="secondary"
                 onClick={async () => {
                   await db.ref(`rooms/${roomId}/winner`).set(team);
                   await db.ref(`rooms/${roomId}/status`).set("postgame");
