@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import { Button } from "../common/Button";
 import { PlayerInfo } from "../common/types";
@@ -7,12 +7,12 @@ import { Blob } from "./Blob";
 import { useUser } from "../common/useUser";
 import { RoomClass } from "./useRoom";
 import { RulesCard } from "../common/RulesCard";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { motion, Variants } from "framer-motion";
 
 export function Lobby({ roomId, room }: { roomId: string; room: RoomClass }) {
   const [user] = useUser();
   const players = room.players || {};
-  // const blueClueMaster = getClueMaster(players, room.cluemasters?.blue, "blue");
-  // const redClueMaster = getClueMaster(players, room.cluemasters?.red, "red");
   if (!user) {
     return null;
   }
@@ -27,16 +27,7 @@ export function Lobby({ roomId, room }: { roomId: string; room: RoomClass }) {
           gridTemplateRows: "min-content 1fr",
         }}
       >
-        <div className="sticky top-6 z-10 rounded-lg p-5 shadow bg-primary text-white md:static">
-          <div className="mb-1 text-sm">invite friends to</div>
-          <a
-            className="text-2xl font-bold"
-            href={`https://slam.dajin.dev/${roomId}`}
-          >
-            slam.dajin.dev/{roomId}
-          </a>
-        </div>
-
+        <InviteBox roomId={roomId} />
         <Flipper
           flipKey={Object.values(players)
             .map((p) => p.nickname + p.team)
@@ -107,3 +98,38 @@ const TeamRoster = ({
     ))}
   </div>
 );
+
+const copiedVariants: Variants = { visible: { y: 0, opacity: 1 }, hidden: { y: "-20px", opacity: 0 } };
+function InviteBox({ roomId }: { roomId: string }) {
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    if (copied) {
+      const interval = setInterval(() => setCopied(false), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [copied]);
+  return (
+    <CopyToClipboard
+      text={`https://slam.dajin.dev/${roomId}`}
+      onCopy={() => setCopied(true)}
+    >
+      <div className="sticky top-6 z-10 rounded-lg shadow bg-primary text-white cursor-pointer md:static">
+        <div className="relative p-5">
+          <div>
+            <div className="mb-1 text-sm">invite friends to</div>
+            <div className="text-2xl font-bold">slam.dajin.dev/{roomId}</div>
+          </div>
+
+          <motion.div
+            animate={copied ? "visible" : "hidden"}
+            variants={copiedVariants}
+            className="absolute right-8 top-4"
+            transition={{type:"spring",stiffness:200, damping:15}}
+          >
+            copied
+          </motion.div>
+        </div>
+      </div>
+    </CopyToClipboard>
+  );
+}
